@@ -1,0 +1,322 @@
+!----------global simulation parameters---------
+simulation
+{
+random_seed = 1,
+}
+
+!----------the node configuration for this simulation----------
+node_conf
+{
+node_number(1:1) = 10,
+if_periodic(1:1) = .true.,
+n_threads = 1,
+}
+
+!----------spatial grid----------q
+grid
+{
+nx_p(1:1) = 128,
+coordinates = "cartesian",
+}
+
+!----------time step and global data dump timestep number----------
+time_step
+{
+dt     =  0.095,
+ndump  =  1,
+}
+
+!----------restart information----------
+restart
+{
+ndump_fac = 0,
+if_restart=.false.,
+}
+
+!----------spatial limits of the simulations----------
+!(note that this includes information about
+! the motion of the simulation box)
+space
+{
+xmin(1:1) =  0.000d0,
+xmax(1:1) =  12.8,
+if_move(1:1)= .false.,
+}
+
+!----------time limits ----------
+time
+{
+tmin =   0.0,
+tmax =   40., 
+}
+
+el_mag_fld
+{
+}
+
+!----------boundary conditions for em-fields ----------
+emf_bound
+{
+}
+
+!----------diagnostic for electromagnetic fields----------
+diag_emf
+{
+ndump_fac = 1,
+!  ndump_fac_ave = 1,
+ndump_fac_ene_int = 1,
+!  n_ave(1:2) = 4, 4,
+reports = "e1", "e2", "e3", "b1", "b2", "b3",
+}
+
+!----------number of particle species----------
+particles
+{
+num_species = 4,
+interpolation = "cubic",
+}
+
+!*******************************
+! Species 1 - ELECTRONS UP
+!*******************************
+
+!----------information for this species  ----------
+species
+{
+name="electrons-up",
+num_par_max = 1000000,
+rqm=-1,
+num_par_x(1:1) = 200,
+add_tag = .true.,
+}
+
+udist
+{
+uth(1:3) = 0.01d0 , 0.01d0 , 0.01d0 ,
+ufl(1:3)=  0.0d0 , 0.4d0 , 0.0d0 ,
+}
+
+profile
+{
+density = 0.5,
+}
+
+!----------boundary conditions for this species----------
+spe_bound
+{
+}
+
+!----------diagnostic for this species----------
+diag_species
+{
+!  ndump_fac_raw = 1,
+ndump_fac = 1,
+!  ndump_fac_ave = 1,
+!  n_ave(1:2) = 4,4,
+ndump_fac_pha = 1,
+ndump_fac_ene = 1,
+
+reports = "charge", !"j1", "ene", !"j2","j3",
+rep_udist = "P11", "P12", "P22", "P00", "P01", "vfl1", "vfl2", "vfl3", "T11", "T12", "T22", "ufl1", "ufl2", "ufl3", "Q111", "Q112", "Q122", "M11", "M12", "M22", "nvfl1",
+
+ps_xmin(1:1) =  0.0, ps_pmin(1:3) = -3, -3, -3,
+ps_xmax(1:1) =  12.8, ps_pmax(1:3) =  3, 3, 3,
+ps_nx(1:1)   = 128, ps_np(1:3)   =  256,  256,  256,
+
+!  if_ps_p_auto(1:3) = .true., .true., .true.,
+
+ps_ngamma = 256,
+
+!  if_ps_gamma_auto = .true.,
+
+ps_gammamin = 1.0,
+ps_gammamax = 10,
+
+phasespaces = "p1x1", "p2x1", !"gx1",
+
+}
+
+!*******************************
+! SPECIES 2 - POSITRONS UP
+!*******************************
+
+!----------information for this species  ----------
+species
+{
+name="positrons-up",
+num_par_max = 1000000,
+rqm=1.0,
+num_par_x(1:1) = 200,
+add_tag = .true.,
+}
+
+udist
+{
+uth(1:3) = 0.01d0, 0.01d0, 0.01d0,
+ufl(1:3)=  0.0d0 , 0.4d0 , 0.0d0 ,
+}
+profile
+{
+density = 0.5,
+}
+!----------boundary conditions for this species----------
+spe_bound
+{
+}
+
+!----------diagnostic for this species----------
+diag_species
+{
+!  ndump_fac_raw = 1,
+ndump_fac = 1,
+!  ndump_fac_ave = 1,
+!  n_ave(1:1) = 4,4,
+ndump_fac_pha = 1,
+ndump_fac_ene = 1,
+
+! reports = "charge", !"j1", !"j2","j3", "ene",
+! rep_udist = "vfl1", "vfl2", "vfl3", "T11", "T12", !"T13", "T23", "T22", "T33", !"P11", "P12", "P13", "P23", "P22", "P33",
+
+ps_xmin(1:1) =  0.0,  ps_pmin(1:3) = -3, -3, -3,
+ps_xmax(1:1) =  12.8, ps_pmax(1:3) =  3, 3, 3,
+ps_nx(1:1)   = 128, ps_np(1:3)   =  256,  256,  256,
+
+!  if_ps_p_auto(1:3) = .true.,.true.,.true.,
+
+ps_ngamma = 256,
+
+!  if_ps_gamma_auto = .true.,
+
+ps_gammamin = 1.0,
+ps_gammamax = 1.5,
+
+! phasespaces = "p1x1","p2x1",!"gx1",
+}
+
+!*******************************
+! Species 1 - ELECTRONS DOWN
+!*******************************
+
+!----------information for this species  ----------
+species
+{
+name="electrons-down",
+num_par_max = 1000000,
+rqm=-1,
+num_par_x(1:1) = 200,
+add_tag = .true.,
+}
+
+udist
+{
+uth(1:3) = 0.01d0 , 0.01d0 , 0.01d0 ,
+ufl(1:3)=  0.0d0 , -0.4d0 , 0.0d0 ,
+}
+profile
+{
+density = 0.5,
+}
+
+!----------boundary conditions for this species----------
+spe_bound
+{
+}
+
+!----------diagnostic for this species----------
+diag_species
+{
+!  ndump_fac_raw = 1,
+ndump_fac = 1,
+!  ndump_fac_ave = 1,
+!  n_ave(1:2) = 4,4,
+ndump_fac_pha = 1,
+ndump_fac_ene = 1,
+
+reports = "charge", !"j1", "ene", !"j2","j3",
+rep_udist = "P11", "P12", "P22", "P00", "P01", "vfl1", "vfl2", "vfl3", "T11", "T12", "T22", "ufl1", "ufl2", "ufl3", "Q111", "Q112", "Q122", "M11", "M12", "M22", "nvfl1", 
+
+ps_xmin(1:1) =  0.0, ps_pmin(1:3) = -3, -3, -3,
+ps_xmax(1:1) =  12.8, ps_pmax(1:3) =  3, 3, 3,
+ps_nx(1:1)   = 128, ps_np(1:3)   =  256,  256,  256,
+
+!  if_ps_p_auto(1:3) = .true.,.true.,.true.,
+
+ps_ngamma = 256,
+
+!  if_ps_gamma_auto = .true.,
+
+ps_gammamin = 1.0,
+ps_gammamax = 10,
+
+phasespaces = "p1x1", "p2x1", !"gx1",
+
+}
+
+!*******************************
+! SPECIES 2 - POSITRONS DOWN
+!*******************************
+
+!----------information for this species  ----------
+species
+{
+name="positrons-down",
+num_par_max = 1000000,
+rqm=1.0,
+num_par_x(1:1) = 200, 
+add_tag = .true.,
+}
+
+udist
+{
+uth(1:3) = 0.01d0, 0.01d0, 0.01d0,
+ufl(1:3)=  0.0d0 , -0.4d0 , 0.0d0 ,
+}
+profile
+{
+density = 0.5,
+}
+!----------boundary conditions for this species----------
+spe_bound
+{
+}
+
+!----------diagnostic for this species----------
+diag_species
+{
+!  ndump_fac_raw = 1,
+ndump_fac = 1,
+!  ndump_fac_ave = 1,
+!  n_ave(1:2) = 4,4,
+ndump_fac_pha = 1,
+ndump_fac_ene = 1,
+
+! reports = "charge", !"j1", !"j2","j3", "ene",
+! rep_udist = "vfl1", "vfl2", "vfl3", "T11", "T12", !"T13", "T23", "T22", "T33", !"P11", "P12", "P13", "P23", "P22", "P33",
+
+ps_xmin(1:1) =  0.0, ps_pmin(1:3) = -3, -3, -3,
+ps_xmax(1:1) =  12.8, ps_pmax(1:3) =  3, 3, 3,
+ps_nx(1:1)   = 128, ps_np(1:3)   =  256,  256,  256,
+
+!  if_ps_p_auto(1:3) = .true.,.true.,.true.,
+
+ps_ngamma = 256,
+
+!  if_ps_gamma_auto = .true.,
+
+ps_gammamin = 1.0,
+ps_gammamax = 1.5,
+
+! phasespaces = "p1x1","p2x1",!"gx1",
+}
+
+current
+{
+}
+
+!-------------smooth for currents-------------
+smooth
+{
+type(1:1) = "5pass",
+}
+
+! --------------------- end of osiris input file ---------------
